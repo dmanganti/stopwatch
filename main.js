@@ -3,112 +3,102 @@ const stopBtn = document.getElementById("stop");
 const resetBtn = document.getElementById("reset");
 
 let timer = document.getElementById("timer");
-let getOnesSeconds = document.getElementById("onesSeconds")
+let getOnesSeconds = document.getElementById("onesSeconds");
 let getTenthSeconds = document.getElementById("tenthSeconds");
 let getOnesMinute = document.getElementById("onesMinute");
 let getTenthMinute = document.getElementById("tenthMinute");
 
-
-
-function updateSeconds() {
-
-    let onesSeconds = countSeconds.getOnesSeconds;
-    let tenthSeconds = countSeconds.getTenthSeconds;
-
-
-    if(onesSeconds !== 9) {
-        onesSeconds += 1;
-    }
-    else if(onesSeconds === 9 && tenthSeconds !== 9) {
-        onesSeconds = 0;
-        tenthSeconds += 1;
-    }
-    else {
-        console.log(onesSeconds);
-    }
-    
+let time = {
+    onesSeconds: 0,
+    tenthSeconds: 0,
+    onesMinute: 0,
+    tenthMinute: 0
 }
 
-// function updateMinutes() {
-//     let onesMinute = countMinutes.onesMinute;
-//     let tenthMinute = countMinutes.tenthMinute;
 
-//     if(onesMinute !== 9) {
-//         onesMinute += 1;
-//     }
-//     else if(onesMinute === 9 && tenthMinute !== 9) {
-//         onesMinute = 0;
-//         tenthMinute += 1;
+// function minutes(time){
+//         if(time.onesMinute < 9) {
+
+//         }
+//         else if(time.tenthMinute < 5){
+//             time.onesSeconds = 0;
+//             getOnesMinute.innerText = time.onesMinute;
+//             time.tenthMinute += 1;
+//             getTenthMinute.innerText = time.tenthMinute;
+//             start();
+//         }
+// }
+
+
+// function Minutes(time) {
+//     if(time.onesMinute < 9) {
+//         time.onesMinute += 1;
+//         getOnesMinute = time.onesMinute;
 //     }
 // }
 
 
-function CountSeconds() {
-    this.countOnesSeconds = +(getOnesSeconds.innerText);
-    this.countTenthSeconds = +(getTenthSeconds.innerText);
-
-    console.log(this.getOnesSeconds);
+function Seconds() {
+    setInterval(function(){
+        if(time.onesSeconds < 9) {
+            time.onesSeconds += 1;
+            getOnesSeconds.innerText = time.onesSeconds;
+        }
+        else if(time.tenthSeconds < 5){
+            time.onesSeconds = 0;
+            getOnesSeconds.innerText = time.onesSeconds;
+            time.tenthSeconds += 1;
+            getTenthSeconds.innerText = time.tenthSeconds;
+        }
+        else if(time.onesSeconds === 9 && time.onesMinute < 9)
+        {
+            time.onesMinute += 1;
+            getOnesMinute.innerText = time.onesMinute;
+            time.onesSeconds = 0;
+            getOnesSeconds.innerText = time.onesSeconds;
+            time.tenthSeconds = 0;
+            getTenthSeconds.innerText = time.tenthSeconds;
+        }
+        else{
+            time.onesSeconds = 0;
+            getOnesSeconds.innerText = time.onesSeconds;
+            time.tenthSeconds = 0;
+            getTenthSeconds.innerText = time.tenthSeconds;
+            time.onesMinute = 0;
+            getOnesMinute.innerText = time.onesMinute;
+            time.tenthMinute += 1;
+            getTenthMinute.innerText = time.tenthMinute;
+        }
+    }, 1000)
 }
 
-function CountMinutes() {
-    this.countOnesMinute = +(getOnesMinute.innerText);
-    this.countTenthMinute = +(getTenthMinute.innerText);
+function start(time) {
+    Seconds();
 }
 
-let countSeconds = new CountSeconds();
-let countMinutes = new CountMinutes();
+function stop(){
+    clearInterval(Seconds());
+}
+
+function reset(){
+    clearInterval(function(){
+        getOnesSeconds.innerText = 0;
+        getTenthSeconds.innerText = 0;
+        getOnesMinute.innerText = 0;
+        getTenthMinute.innerText = 0;
+    }, 100)
+}
 
 
 // EventListeners
 startBtn.addEventListener("click", e => {
-    updateSeconds();
+    start(time);
 })
 
+stopBtn.addEventListener("click", e => {
+    stop(Seconds());
+})
 
-
-
-// function setTimerData(tMinute, oMinute, tSeconds, oSeconds) {
-//     localStorage.setItem('tMinute', tMinute);
-//     localStorage.setItem('oMinute', oMinute);
-//     localStorage.setItem('tSeconds', tSeconds);
-//     localStorage.setItem('oSeconds', oSeconds);
-// }
-
-// function updateSeconds() {
-//     onesSeconds = +(onesSeconds.innerText);
-//     tenthSeconds = +(tenthSeconds.innerText);
-
-//     onesSeconds = 9;
-//     tenthSeconds = 9;
-
-
-//     if(onesSeconds !== 9) {
-//         onesSeconds += 1;
-//     }
-//     else if(onesSeconds === 9 && tenthSeconds !== 9) {
-//         onesSeconds = 0;
-//         tenthSeconds += 1;
-//     }
-//     else {
-//         updateMinutes();
-//     }
-
-//     console.log('in updateSeconds')
-// }
-
-// function updateMinutes() {
-//     let onesMinute = +(onesMinute.innerText)
-//     let tenthMinute = +(tenthMinute.innerText)
-
-//     if(onesMinute !== 9) {
-//         onesMinute += 1;
-//     }
-//     else if(onesMinute === 9 && tenthMinute !== 9) {
-//         onesMinute = 0;
-//         tenthMinute += 1;
-//     }
-//     else {
-//         stop();
-//         reset();
-//     }
-// }
+resetBtn.addEventListener("click", e => {
+    reset();
+})
